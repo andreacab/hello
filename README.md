@@ -1,2 +1,2 @@
 # Go example app for CI-CD with jenkins
-2
+3
