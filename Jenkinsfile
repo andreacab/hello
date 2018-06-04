@@ -1,18 +1,24 @@
 pipeline {
-    agent { docker { image 'golang:1.10.2-stretch' } }
+    agent { docker {
+        image 'golang:1.10.2-stretch'
+        customWorkspace '/go/src/bibucket.org/andreacaban/hello'
+    } }
+    environment {
+        APP_DIR = "$GOPATH/src/bibucket.org/andreacaban/hello"
+    }
     stages {
         stage('setup') {
             steps {
+                sh 'chown -R jenkins /go'
                 sh 'go version'
             }
         }
         stage('build') {
             steps {
-                sh 'mkdir -p $GOPATH/src/bibucket.org/andreacaban/hello'
-                sh 'mv -v ./* $GOPATH/src/bibucket.org/andreacaban/hello'
-                sh 'cd $GOPATH/src/bibucket.org/andreacaban/hello && pwd && ls -al'
-                sh 'pwd'
-                sh 'cd $GOPATH/src/bibucket.org/andreacaban/hello && go build -v'
+                sh 'echo $APP_DIR'
+                sh 'echo $GOPATH'
+                sh 'pwd && ls -al'
+                sh 'go build -v && ls -al'
             }
         }
         stage('check') {
