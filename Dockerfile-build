@@ -1,3 +1,5 @@
 FROM golang:1.10.2-stretch
-WORKDIR $GOPATH/src/bibucket.org/andreacaban/hello
+ENV APP_DIR $GOPATH/src/bibucket.org/andreacaban/hello
+RUN mkdir -p $APP_DIR
+WORKDIR $APP_DIR
 COPY . .
