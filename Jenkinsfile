@@ -8,11 +8,19 @@ pipeline {
         stage('setup') {
             steps {
                 sh 'go version && echo $APP_DIR'
+                sh 'git log -n 1 --pretty=format:"%h"'
             }
         }
-        stage('build') {
+        stage('build app') {
             steps {
                 sh 'cd $APP_DIR && go build -v'
+            }
+        }
+        stage('build image') {
+            steps {
+                sh '''
+                    docker image ls
+                '''
             }
         }
         stage('check') {
