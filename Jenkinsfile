@@ -1,7 +1,7 @@
 pipeline {
     agent { docker {
-        image 'andreacab/hello:latest'
-        args  '-v $WORKSPACE:/go/src/bibucket.org/andreacaban/hello'
+        image 'golang:1.10.2-stretch'
+        args  '-e "APP_DIR=/go/src/bibucket.org/andreacaban/hello"'
     } }
     stages {
         stage('setup') {
