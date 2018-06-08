@@ -7,6 +7,12 @@ pipeline {
         }
     }
     stages {
+        stage('setup app') {
+            steps {
+                sh 'cd $APP_DIR && go list ./...'
+                sh 'cd $APP_DIR && go get ./...'
+            }
+        }
         stage('test app') {
             steps {
                 sh 'echo "Testing Go app"'
@@ -15,8 +21,6 @@ pipeline {
         }
         stage('Build app') {
             steps {
-                sh 'echo "Installing dependencies"'
-                sh 'cd $APP_DIR && go get'
                 sh 'echo "Building Go app"'
                 sh 'cd $APP_DIR && go build -v'
             }
@@ -24,10 +28,8 @@ pipeline {
         stage('build image') {
             agent none
             steps {
-                steps {
-                    sh "docker build -t andreacab/hello:${GIT_COMMIT} ."
-                    sh "docker image ls"
-
+                script {
+                    docker.build("andreacab/hello:${env.GIT_COMMIT}")
                 }
             }
         }
