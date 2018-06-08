@@ -24,9 +24,11 @@ pipeline {
         stage('build image') {
             agent none
             steps {
-                sh '''
-                    docker image ls
-                '''
+                steps {
+                    sh "docker build -t andreacab/hello:${GIT_COMMIT} ."
+                    sh "docker image ls"
+
+                }
             }
         }
         stage('check image runs') {
